@@ -11,7 +11,6 @@ import Box from "@mui/material/Box";
 
 const ModeSelect = () => {
   const {mode, setMode} = useColorScheme();
-
   const handleChange = (event) => {
     const selectMode = event.target.value;
     setMode(selectMode);
@@ -19,7 +18,7 @@ const ModeSelect = () => {
 
   return (
     <div>
-      <FormControl sx={{m: 1, minWidth: 80}}>
+      <FormControl size='small'>
         <InputLabel id='demo-simple-select-autowidth-label'>Age</InputLabel>
         <Select
           labelId='demo-simple-select-autowidth-label'
