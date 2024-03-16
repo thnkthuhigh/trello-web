@@ -24,22 +24,22 @@ const Profiles = () => {
     <Box>
       {" "}
       <div>
-        <Tooltip title='Account settings'>
-          <IconButton
-            onClick={handleClick}
-            size='small'
-            sx={{padding: 0}}
-            aria-controls={open ? "basic-menu-profile" : undefined}
-            aria-haspopup='true'
-            aria-expanded={open ? "true" : undefined}>
+        <IconButton
+          onClick={handleClick}
+          size='small'
+          sx={{padding: 0}}
+          aria-controls={open ? "basic-menu-profile" : undefined}
+          aria-haspopup='true'
+          aria-expanded={open ? "true" : undefined}>
+          <Tooltip title='Account settings'>
             <Avatar
               alt='Thanh'
               src='https://avatars.githubusercontent.com/u/132247739?v=4'
               sx={{width: 32, height: 32}}>
               M
             </Avatar>
-          </IconButton>
-        </Tooltip>
+          </Tooltip>
+        </IconButton>
         <Menu
           id='basic-menu-profile'
           anchorEl={anchorEl}

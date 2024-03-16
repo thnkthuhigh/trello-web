@@ -14,6 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Profiles from "./Menus/Profiles";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
 const AppBar = () => {
   return (
@@ -26,6 +27,8 @@ const AppBar = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        gap: 2,
+        overflow: "auto",
       }}>
       <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
         <AppsIcon fontSize='small' sx={{color: "primary.main"}} />
@@ -50,7 +53,9 @@ const AppBar = () => {
         <Workspace />
         <Recent />
         <Templates />
-        <Button variant='outlined'>Create</Button>
+        <Button variant='outlined' startIcon={<ControlPointIcon />}>
+          Create
+        </Button>
       </Box>
       <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
         <TextField
