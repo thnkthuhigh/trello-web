@@ -10,6 +10,8 @@ const BoardContent = () => {
           `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boarBatHeight})`,
         display: "flex",
         alignItems: "center",
+        bgcolor: (theme) =>
+          theme.palette.mode === "dark" ? "#2f3542" : "#5758BB",
       }}>
       Box Content
     </Box>

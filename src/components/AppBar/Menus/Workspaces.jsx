@@ -27,6 +27,7 @@ const Workspace = () => {
       {" "}
       <div>
         <Button
+          sx={{color: "#fff"}}
           id='basic-button-workspace'
           aria-controls={open ? "basic-menu-workspace" : undefined}
           aria-haspopup='true'

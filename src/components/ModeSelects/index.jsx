@@ -19,12 +19,25 @@ const ModeSelect = () => {
   return (
     <div>
       <FormControl size='small'>
-        <InputLabel id='demo-simple-select-autowidth-label'>Age</InputLabel>
+        <InputLabel
+          sx={{color: "#fff", "&.Mui-focused": {color: "#fff"}}}
+          id='demo-simple-select-autowidth-label'>
+          Age
+        </InputLabel>
         <Select
           labelId='demo-simple-select-autowidth-label'
           id='demo-simple-select-autowidth'
           value={mode}
           onChange={handleChange}
+          sx={{
+            color: "#fff",
+            ".MuiOutlinedInput-notchedOutline": {borderColor: "#fff"},
+            "&:hover .MuiOutlinedInput-notchedOutline": {borderColor: "#fff"},
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#fff",
+            },
+            ".MuiSvgIcon-root": {color: "#fff"},
+          }}
           autoWidth
           label='Mode'>
           <MenuItem value='light'>

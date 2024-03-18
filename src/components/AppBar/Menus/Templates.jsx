@@ -24,6 +24,7 @@ const Templates = () => {
       {" "}
       <div>
         <Button
+          sx={{color: "#fff"}}
           id='basic-button-templates'
           aria-controls={open ? "basic-menu-templates" : undefined}
           aria-haspopup='true'
