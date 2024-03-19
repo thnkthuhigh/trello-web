@@ -30,7 +30,7 @@ const BoardBar = () => {
       sx={{
         backgroundColor: "#fff",
         width: "100%",
-        height: (theme) => theme.trello.boarBatHeight,
+        height: (theme) => theme.trello.boardBarHeight,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -94,6 +94,9 @@ const BoardBar = () => {
               height: 34,
               fontSize: 16,
               border: "none",
+              color: "#fff",
+              cursor: "pointer",
+              "&:first-of-type": {bgcolor: "#a4b0be"},
             },
           }}>
           <Tooltip title='Thanh'>
