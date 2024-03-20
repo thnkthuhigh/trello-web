@@ -22,7 +22,7 @@ const ModeSelect = () => {
         <InputLabel
           sx={{color: "#fff", "&.Mui-focused": {color: "#fff"}}}
           id='demo-simple-select-autowidth-label'>
-          Age
+          Mode
         </InputLabel>
         <Select
           labelId='demo-simple-select-autowidth-label'
@@ -48,13 +48,13 @@ const ModeSelect = () => {
           </MenuItem>
           <MenuItem value='dark'>
             <Box sx={{display: "flex", alignItems: "center", gap: 1}}>
-              dark
+              Dark
               <DarkModeIcon fontSize='small' />
             </Box>
           </MenuItem>
           <MenuItem value='system'>
             <Box sx={{display: "flex", alignItems: "center", gap: 1}}>
-              system
+              System
               <SettingsBrightnessIcon fontSize='small' />
             </Box>
           </MenuItem>
