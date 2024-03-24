@@ -1,6 +1,9 @@
 import Box from "@mui/material/Box";
 import ListColumns from "./ListColumns/ListColumns";
 import {mapOrder} from "~/utils/sorts";
+//phan tu giu cho
+import Column from "./ListColumns/Column/Column";
+import Card from "./ListColumns/Column/ListCards/Card/Card";
 
 import {
   DndContext,
@@ -9,8 +12,10 @@ import {
   TouchSensor,
   useSensor,
   useSensors,
+  DragOverlay,
+  defaultDropAnimationSideEffects,
 } from "@dnd-kit/core";
-import {arrayMove} from "@dnd-kit/sortable";
+import {arrayMove, defaultAnimateLayoutChanges} from "@dnd-kit/sortable";
 import {useEffect, useState} from "react";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -57,6 +62,14 @@ const BoardContent = ({board}) => {
     setOrdereColumns(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
   }, [board]);
 
+  const findColumnByCardId = (cardId) => {
+    //tim columns theo card id
+    return ordereColumns.find((column) =>
+      column?.cards?.map((card) => card._id)?.includes(cardId)
+    );
+  };
+
+  //khi bat dau keo 1 phan tu
   const handleDragStart = (event) => {
     setActiveDragItemId(event?.active?.id);
     setActiveDragItemType(
@@ -66,9 +79,58 @@ const BoardContent = ({board}) => {
     );
     setActiveDragItemData(event?.active?.data?.current);
   };
+  //qua trinh keo 1 phan tu
+  const handleDragOver = (event) => {
+    //ko lam gi khi keo column
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return;
+    // console.log("ss", event);
+    const {active, over} = event;
+    //kiem tra neu ko ton tai over dung lai(keo linh tinh ra ngoai)
+    if (!active || !over) return;
 
+    // activeDraggingCardId la car ddang duoc keo
+    const {
+      id: activeDraggingCardId,
+      data: {current: activeDraggingCardData},
+    } = active;
+    //overCardId la car tren duoi dang tuong tac voi ced duoc ke
+    const {id: overCardId} = over;
+
+    //tim 2 column cua 2 caed theo cardID
+    const activeColumn = findColumnByCardId(activeDraggingCardId);
+    const overColumn = findColumnByCardId(overCardId);
+    //neu khong ton tai 1 trong 2 column dung lai
+    if (!activeColumn || !overColumn) return;
+    if (activeColumn._id !== overColumn._id) {
+      setOrdereColumns((prevColumns) => {
+        //tim vi tri active card sap duoc tha
+        const overCardIndex = overColumn?.cards?.findIndex(
+          (card) => card._id === overCardId
+        );
+
+        let newCardIndex;
+        const isBelowOverItem =
+          active.rect.current.translated &&
+          active.rect.current.translated.top > over.rect.top + over.rect.height;
+        const modifier = isBelowOverItem ? 1 : 0;
+        newCardIndex =
+          overCardIndex >= 0
+            ? overCardIndex + modifier
+            : overColumn?.cards?.length + 1;
+        return [...prevColumns];
+      });
+    }
+  };
+
+  //khi jket thuc keo 1 phan tu
   const handleDragEnd = (event) => {
     console.log(event);
+
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+      console.log("hanh dong keo tha card");
+      return;
+    }
+
     const {active, over} = event;
 
     //kiem tra neu ko ton tai over dung lai
@@ -94,9 +156,21 @@ const BoardContent = ({board}) => {
     setActiveDragItemData(null);
   };
 
+  //animation khi tha phan tu
+  const dropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: {
+        active: {
+          opacity: "0.5",
+        },
+      },
+    }),
+  };
+
   return (
     <DndContext
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       sensors={sensors}>
       <Box
@@ -108,6 +182,17 @@ const BoardContent = ({board}) => {
             theme.palette.mode === "dark" ? "#2f3542" : "#5758BB",
         }}>
         <ListColumns columns={ordereColumns} />
+        <DragOverlay dropAnimation={dropAnimation}>
+          {!activeDragItemType && null}
+          {activeDragItemId &&
+            activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
+              <Column column={activeDragItemData} />
+            )}
+          {activeDragItemId &&
+            activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
+              <Card card={activeDragItemData} />
+            )}
+        </DragOverlay>
       </Box>
     </DndContext>
   );

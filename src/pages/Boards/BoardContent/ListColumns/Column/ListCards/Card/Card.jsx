@@ -21,6 +21,7 @@ const Card = ({card}) => {
     transform: CSS.Translate.toString(transform), //translate not tranforming
     transition,
     opacity: isDragging ? 0.5 : undefined,
+    border: isDragging ? "1px solid red" : undefined,
   };
 
   const shoudShowCardActions = () => {
