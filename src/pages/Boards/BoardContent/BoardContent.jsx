@@ -17,6 +17,7 @@ import {
 } from "@dnd-kit/core";
 import {arrayMove, defaultAnimateLayoutChanges} from "@dnd-kit/sortable";
 import {useEffect, useState} from "react";
+import {cloneDeep} from "lodash";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -107,7 +108,7 @@ const BoardContent = ({board}) => {
         const overCardIndex = overColumn?.cards?.findIndex(
           (card) => card._id === overCardId
         );
-
+        //logic tinh toan cardindex moi tren hoac duoi cau card (lay tu thu vien)
         let newCardIndex;
         const isBelowOverItem =
           active.rect.current.translated &&
@@ -117,7 +118,44 @@ const BoardContent = ({board}) => {
           overCardIndex >= 0
             ? overCardIndex + modifier
             : overColumn?.cards?.length + 1;
-        return [...prevColumns];
+        //clone oredcolumn sang 1 mang moi
+        const nextColumns = cloneDeep(prevColumns);
+        const nextActiveColumn = nextColumns.find(
+          (column) => column._id === activeColumn._id
+        );
+        const nextOverColumn = nextColumns.find(
+          (column) => column._id === overColumn._id
+        );
+        //column cu
+        if (nextActiveColumn) {
+          // xoa card tai column active
+          nextActiveColumn.cards = nextActiveColumn.cards.filter(
+            (card) => card._id !== activeDraggingCardId
+          );
+
+          nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
+            (card) => card._id
+          );
+        }
+        // column moi
+        if (nextOverColumn) {
+          // kiem tra xem card dang keo co ton tai trong over column hay chua neu co roi thif can xoa truoc
+          nextOverColumn.cards = nextOverColumn.cards.filter(
+            (card) => card._id !== activeDraggingCardId
+          );
+          //them card ddang keo vi tri index moi
+          nextOverColumn.cards = nextOverColumn.cards.toSpliced(
+            newCardIndex,
+            0,
+            activeDraggingCardData
+          );
+          //cap nhat lai mang cardorderIds cho chuan du lieu
+          nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
+            (card) => card._id
+          );
+        }
+
+        return nextColumns;
       });
     }
   };
